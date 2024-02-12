@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jenkins-pod
+  labels:
+    app: jenkins
+spec:
+  containers:
+  - name: jenkins-container
+    image: jenkins/jenkins:lts
+    ports:
+    - containerPort: 8080
+    - containerPort: 50000
+    volumeMounts:
+      - name: redis-vol
+        mountPath: /etc/credentials
+  volumes:
+    - name: redis-vol
+      secret:
+        secretName: devopssecret

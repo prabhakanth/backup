@@ -1,0 +1,30 @@
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: kanth
+  region: us-east-2
+vpc:
+  id: vpc-01ea20c20ef28e3de
+  cidr: 172.31.0.0/16
+  subnets:
+    public:
+      public-one:
+        id: subnet-06b1c9dfbea4a3873
+      public-two:
+        id: subnet-0ffdf674a509d2113
+      public-three:
+        id: subnet-03c0a5068349c7a69
+      public-four:
+        id: subnet-0eeb39bc5b1444c8f
+nodeGroups:
+  - name: ng-1
+    instanceType: t3.medium
+    desiredCapacity: 1
+    subnets:
+      - public-one
+  - name: ng-2
+    instanceType: t3.medium
+    desiredCapacity: 2
+    subnets:
+      - public-three

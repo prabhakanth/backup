@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: replicaset
+spec:
+  replicas: 2
+  selector:
+    matchLabels: 
+      app: web-jenkins
+  template: 
+    metadata:
+      labels:
+        app: web-jenkins
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - web-jenkins
+            topologyKey: "kubernetes.io/hostname"
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - jenkins
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: jenkins-container
+        image: jenkins/jenkins:2.60.2
